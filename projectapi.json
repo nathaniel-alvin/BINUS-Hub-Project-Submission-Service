@@ -1,0 +1,176 @@
+{
+  "openapi":"3.0.3",
+  "info": {
+    "title":"Project Service",
+    "version":"1.0.0",
+    "description": "This spec lists all available endpoints related to the project service.",
+    "contact": {
+      "name": "Someone's name",
+      "email": "someone@binus.ac.id"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://{subdomain}.yourawsdomain.yourtld/api/v1",
+      "description": "AWS",
+      "variables": {
+        "subdomain":{
+          "enum": ["dev","prod"],
+          "default": "dev"
+        }
+      }
+    },
+    {
+      "url": "https://{subdomain}.yourgcpdomain.anothertld/api/v1",
+      "description": "GCP",
+      "variables": {
+        "subdomain":{
+          "enum": ["dev","prod"],
+          "default": "dev"
+        }
+      }
+    }
+  ],
+  "tags": [
+    {"name": "Query","description": "All endpoints related to query projects"},
+    {"name": "Create","description": "All endpoints related to creating projects"}
+  ],
+  "paths": {
+    "/projects":{
+      "get":{
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "tags": ["Query"],
+        "summary": "Get all projects",
+        "responses": {
+          "200":{
+            "description": "Projects to be returned",
+            "content": {
+              "application/json":{
+                "example": [
+                  {
+                    "project-id":"530fea",
+                    "title": "EducationApp",
+                    "members": ["Alifsyah Rizky Sutarjadi","Wais Ibrahim"],
+                    "score": 90,
+                    "instructor": "Ida Bagus Kerthyayana Manuaba",
+                    "course-code": "COMP6703001",
+                    "date-submitted": "2022-06-13T15:24:54+07:00",
+                    "file": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+                  },
+                  {
+                    "project-id":"4427b0",
+                    "title": "Gaming Peripheral Store Database Interface",
+                    "members": ["Alifsyah Rizky Sutarjadi","Michael Joseph", "Rafian Athallah Marchansyah"],
+                    "score": 92,
+                    "instructor": "Raymond Bahana",
+                    "course-code": "ISYS6169001",
+                    "date-submitted": "2022-01-13T13:15:21+07:00",
+                    "file": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      },
+      "post":{
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "tags": ["Create"],
+        "summary": "Post new projects",
+        "description": "Multiple projects can be submitted at once.",
+        "requestBody": {
+          "required": true,
+          "description": "Request body to upload projects",
+
+          "content": {
+            "application/json":{
+              "schema":{
+                "$ref": "#/components/schemas/Project"
+              },
+              "example": [
+                    {
+                      "title": "Binus Hub Project Service",
+                      "members": ["Alifsyah Rizky Sutarjadi","Jonathan Christopher Wenan", "Nathaniel Alvin"],
+                      "score": 91,
+                      "instructor": "Ardimas Andi Purwita",
+                      "course-code": "COMP6705001",
+                      "date-submitted": "2023-01-09T00:13:32+07:00",
+                      "file": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+                    }
+                  ]
+            }
+          }
+        },
+        "responses": {
+          "200":{
+            "description": "Projects are created",
+            "content": {
+              "application/json":{
+                "example":{
+                  "message": "Project successfully created."
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "Authorization": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "description": "Please enter the access token."
+      }
+    },
+    "schemas": {
+      "Project":{
+        "type": "object",
+        "required": ["title", "members", "score", "instructor", "course-code", "file"],
+        "properties": {
+          "title": {
+            "type":"string",
+            "minLength": 1
+          },
+          "members": {
+            "type":"array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "score": {
+            "type": "number"
+          },
+          "instructor": {
+            "type": "string",
+            "minLength": 1
+          },
+          "course-code": {
+            "type": "string",
+            "minLength": 1
+          },
+          "date-submitted": {
+            "type": "string",
+            "minLength": 1
+          },
+          "file": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+        
+      }
+    }
+  }
+}
