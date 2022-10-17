@@ -3,7 +3,7 @@
   "info": {
     "title":"Project/Submission Service API Specifications",
     "version":"1.0.2",
-    "description": "This spec lists all available endpoints related to the project service.\n\n(v1.0.2):\n- New parameter named assignment-id added (for lecturer service)\n- members replaced by members-id (using account id instead of using their names)\n- instructor replaced by instructor-id (using account id instead of using their names)\n\n(v1.0.1):\n- New parameter thumbnail added to projects.",
+    "description": "This spec lists all available endpoints related to the project service.\n\n(v1.0.2):\n- Added health check method\n- New parameter named assignment-id added (for lecturer service)\n- members replaced by members-id (using account id instead of using their names)\n- instructor replaced by instructor-id (using account id instead of using their names)\n\n(v1.0.1):\n- New parameter thumbnail added to projects.",
     "contact": {
       "name": "Alifsyah Rizky Sutarjadi",
       "email": "alifsyah.sutarjadi@binus.ac.id"
@@ -33,7 +33,8 @@
   ],
   "tags": [
     {"name": "Query","description": "All endpoints related to query projects"},
-    {"name": "Create","description": "All endpoints related to creating projects"}
+    {"name": "Create","description": "All endpoints related to creating projects"},
+    {"name": "Health Check","description": "Endpoints to check if the service is healthy"}
   ],
   "paths": {
     "/projects":{
@@ -122,6 +123,26 @@
               "application/json":{
                 "example":{
                   "message": "Project successfully created."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/healthz": {
+      "get": {
+        "tags": [
+          "Health Check"
+        ],
+        "responses": {
+          "200": {
+            "description": "Health check",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "example": "healthy"
                 }
               }
             }
